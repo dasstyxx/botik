@@ -1,21 +1,16 @@
 from abc import ABC, abstractmethod
 
-from botik.api.api import Api
 from botik.templates.page_templates import PageTemplates
 from botik.input.keyboard.keyboard_markup import KeyboardMarkup
 from botik.input.keyboard.markup_factory import KeyboardMarkupFactory
 from botik.input.message_handlers.events.bot_events import BotEvents
 
+from api import api
+
 
 class Page(ABC):
 
-    def __init__(self, path: str, api: Api, navigator, templates: PageTemplates, bot_events: BotEvents,
-                 markup_factory: KeyboardMarkupFactory,
-                 data):
-        self.templates = templates
-        self.bot_events = bot_events
-        self.nav = navigator
-        self.api = api
+    def __init__(self, path: str, markup_factory: KeyboardMarkupFactory, data):
         self.path = path
         self.markup: KeyboardMarkup = None
 
@@ -52,9 +47,9 @@ class Page(ABC):
         :param markup: Should the keyboard be sent?
         """
         if not markup:
-            await self.api.msg.send(user, message)
+            await api.msg.send(user, message)
         else:
-            await self.api.msg.send_with_keyboard(user, message, self.markup)
+            await api.msg.send_with_keyboard(user, message, self.markup)
 
     def get_data(self):
         return self._data

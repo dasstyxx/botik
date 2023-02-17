@@ -1,12 +1,12 @@
 import logging
 from abc import ABC, abstractmethod
 
+from navigation import navigator
+
 
 class RawMessageHandlers(ABC):
-    def __init__(self, bot, start_callback, users, navigator, user_input, events):
-        self.events = events
+    def __init__(self, bot, start_callback, users, user_input):
         self.user_input = user_input
-        self.navigator = navigator
         self.users = users
         self.start_callback = start_callback
 
@@ -26,7 +26,7 @@ class RawMessageHandlers(ABC):
             logging.debug(f"Existing user! id: {user.id}")
         else:
             user = self.users.add(user_id)
-            await self.navigator.change_page(user, '/')
+            navigator.change_page(user, '/')
             logging.debug(f"New user! id: {user.id}")
         return user
 

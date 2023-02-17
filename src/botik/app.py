@@ -4,6 +4,8 @@ from botik.input.message_handlers.events.bot_events import BotEvents
 from botik.page.page_factory import PageFactory
 from botik.user.user_base import UserBase
 
+from navigation import navigator
+
 
 class App(ABC):
     """
@@ -13,11 +15,9 @@ class App(ABC):
     def __init__(self, bot):
         self.bot = bot
         self._page_fac: PageFactory = None
-        self.navigator = None
         self.templates = None
         self.user_input = None
         self.users = UserBase()
-        self.events = BotEvents()
 
         self.initialize(bot)
 
@@ -36,4 +36,4 @@ class App(ABC):
         """
         Add the PageData model to be handled by bot.
         """
-        self.navigator.add_page_data(page_data)
+        navigator.add_page_data(page_data)
