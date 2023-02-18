@@ -5,7 +5,7 @@ from botik.input.keyboard.keyboard_markup import KeyboardMarkup
 from botik.input.keyboard.markup_factory import KeyboardMarkupFactory
 from botik.input.message_handlers.events.bot_events import BotEvents
 
-from api import api
+from botik.api import api, get_api
 
 
 class Page(ABC):
@@ -47,9 +47,9 @@ class Page(ABC):
         :param markup: Should the keyboard be sent?
         """
         if not markup:
-            await api.msg.send(user, message)
+            await get_api().msg.send(user, message)
         else:
-            await api.msg.send_with_keyboard(user, message, self.markup)
+            await get_api().msg.send_with_keyboard(user, message, self.markup)
 
     def get_data(self):
         return self._data

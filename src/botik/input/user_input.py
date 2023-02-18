@@ -1,6 +1,6 @@
 import logging
 
-from navigation import navigator
+from botik.navigation import navigator
 
 
 class UserInput:

@@ -1,7 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 
-from navigation import navigator
+from botik.navigation import navigator
 
 
 class RawMessageHandlers(ABC):
@@ -26,7 +26,7 @@ class RawMessageHandlers(ABC):
             logging.debug(f"Existing user! id: {user.id}")
         else:
             user = self.users.add(user_id)
-            navigator.change_page(user, '/')
+            await navigator.change_page(user, '/')
             logging.debug(f"New user! id: {user.id}")
         return user
 

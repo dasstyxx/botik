@@ -4,7 +4,7 @@ from botik.input.message_handlers.events.bot_events import BotEvents
 from botik.page.page_factory import PageFactory
 from botik.user.user_base import UserBase
 
-from navigation import navigator
+from botik.navigation import navigator
 
 
 class App(ABC):
