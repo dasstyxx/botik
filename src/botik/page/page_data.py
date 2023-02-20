@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC
 from typing import Type, Union
 
-from botik.navigation.navigation import Navigation
+from botik.navigation.routing import concat_paths
 from botik.page.page import Page
 
 
@@ -35,5 +35,5 @@ class PageData(ABC):
         if not isinstance(parent, str):
             parent = parent.path
 
-        combined_path = Navigation.concat_paths(parent, path)
+        combined_path = concat_paths(parent, path)
         return str(combined_path)

@@ -1,10 +1,8 @@
 from abc import ABC, abstractmethod
 
-from botik.input.message_handlers.events.bot_events import BotEvents
+from botik.input.user_input import UserInput
 from botik.page.page_factory import PageFactory
 from botik.user.user_base import UserBase
-
-from botik.navigation import navigator
 
 
 class App(ABC):
@@ -15,11 +13,9 @@ class App(ABC):
     def __init__(self, bot):
         self.bot = bot
         self._page_fac: PageFactory = None
-        self.templates = None
-        self.user_input = None
         self.users = UserBase()
-
-        self.initialize(bot)
+        self.user_input = UserInput(self.users)
+        self.pages_data = None
 
     @abstractmethod
     def start(self):
@@ -29,11 +25,11 @@ class App(ABC):
         pass
 
     @abstractmethod
-    def initialize(self, bot):
+    def initialize(self):
         pass
 
-    def add_page(self, page_data):
+    def set_pages(self, pages_data):
         """
-        Add the PageData model to be handled by bot.
+        Set the PageData list to be handled by bot.
         """
-        navigator.add_page_data(page_data)
+        self.pages_data = pages_data
