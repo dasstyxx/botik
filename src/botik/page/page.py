@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-from botik.templates.page_templates import PageTemplates
 from botik.input.keyboard.keyboard_markup import KeyboardMarkup
 from botik.input.keyboard.markup_factory import KeyboardMarkupFactory
 from botik.input.message_handlers.events.bot_events import BotEvents
