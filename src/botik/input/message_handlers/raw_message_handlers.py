@@ -6,6 +6,7 @@ from botik.navigation import navigator
 
 class RawMessageHandlers(ABC):
     def __init__(self, bot, start_callback, users, user_input):
+        self.bot = bot
         self.user_input = user_input
         self.users = users
         self.start_callback = start_callback

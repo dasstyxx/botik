@@ -38,7 +38,7 @@ class Page(ABC):
         """
         self.markup = self._markup_factory.create(inline=self._data.inline, one_time=self._data.one_time)
 
-    async def send(self, user, message, markup=False):
+    async def send(self, user, message, markup=False, attachment=None):
         """
         Send a text message to user shorthand method.
         :param user: User object.
@@ -46,7 +46,7 @@ class Page(ABC):
         :param markup: Should the keyboard be sent?
         """
         if not markup:
-            await get_api().msg.send(user, message)
+            await get_api().msg.send(user, message, attachment=attachment)
         else:
             await get_api().msg.send_with_keyboard(user, message, self.markup)
 

@@ -9,7 +9,7 @@ class SendMessage(ABC):
     def __init__(self, bot):
         self.bot = bot
 
-    async def send(self, user, text):
+    async def send(self, user, text, attachment=None):
         pass
 
     async def send_with_keyboard(self, user, text, keyboard):
