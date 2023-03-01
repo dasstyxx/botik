@@ -1,4 +1,6 @@
+import asyncio
 import logging
+
 from botik.navigation.routing import concat_paths
 
 
@@ -6,6 +8,10 @@ class Navigation:
     def __init__(self):
         self.page_factory = None
         self.path_to_page_data = {}
+        self.change_page_delayed = []
+
+        loop = asyncio.get_event_loop()
+        loop.create_task(self._monitor_page_change())
 
     def initialize(self, page_factory, data):
         self.page_factory = page_factory
@@ -20,16 +26,7 @@ class Navigation:
         :param user: User
         :param path: Absolute (starts with a '~') or relative path to page
         """
-        current_page = user.current_page
-        current_path = current_page.path if current_page else '/'
-        concat_path = concat_paths(current_path, path)
-
-        page = await self._render_page(user, concat_path)
-        if page:
-            user.set_page(page)
-            if current_page:
-                current_page.destruct()
-            logging.debug(f"User {user.id} has changed page\n\tfrom {current_path}\n\tto {concat_path}")
+        self.change_page_delayed = [user, path]
 
     async def get_back(self, user):
         """
@@ -49,3 +46,30 @@ class Navigation:
         page = self.page_factory.create(data)
         await page.make_page_content(user)
         return page
+
+    async def _monitor_page_change(self):
+        while True:
+            if self.change_page_delayed:
+                await self.execute_page_change()
+            await asyncio.sleep(0.1)
+
+    async def execute_page_change(self):
+        """
+        Inner method, don't use it
+        """
+        if not self.change_page_delayed:
+            return
+
+        user, path = self.change_page_delayed
+        self.change_page_delayed = None
+
+        current_page = user.current_page
+        current_path = current_page.path if current_page else '/'
+        concat_path = concat_paths(current_path, path)
+
+        page = await self._render_page(user, concat_path)
+        if page:
+            user.set_page(page)
+            if current_page:
+                current_page.destruct()
+            logging.debug(f"User {user.id} has changed page\n\tfrom {current_path}\n\tto {concat_path}")

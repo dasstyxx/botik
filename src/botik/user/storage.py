@@ -7,3 +7,6 @@ class Storage:
 
     async def get(self, key):
         return self._storage[key]
+
+    async def exist(self, key):
+        return key in self._storage
