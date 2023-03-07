@@ -81,7 +81,6 @@ class Page(ABC):
         Called when user sends anything to bot while this page instance is active.
         Don't override.
         """
-        # TODO: Don't trigger the inline buttons this way!
         pressed_button = self.markup.get_pressed_button(text)
         if pressed_button:
             await pressed_button.press(user)

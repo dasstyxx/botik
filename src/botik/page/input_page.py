@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from botik.page.page import Page
 
 
+# TODO: Rename to TextInputPage
 class InputPage(Page, ABC):
 
     @abstractmethod

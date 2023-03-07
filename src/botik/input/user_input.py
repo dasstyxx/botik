@@ -11,7 +11,6 @@ class UserInput:
         logging.debug("Forward button")
 
     async def handle_input(self, user, text):
-        # TODO: Do not render page on every user message!
         page = user.current_page
 
         await page.handle_raw_input(user, text)
