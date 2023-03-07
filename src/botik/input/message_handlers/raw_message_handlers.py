@@ -28,7 +28,7 @@ class RawMessageHandlers(ABC):
         else:
             user = self.users.add(user_id)
             await navigator.change_page(user, '/')
-            await navigator.execute_page_change()
+            # await navigator.execute_page_change()
             logging.debug(f"New user! id: {user.id}")
         return user
 

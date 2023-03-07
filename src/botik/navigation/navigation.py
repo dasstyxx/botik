@@ -8,7 +8,7 @@ class Navigation:
     def __init__(self):
         self.page_factory = None
         self.path_to_page_data = {}
-        self.change_page_delayed = []
+        self.change_page_delayed = {}
 
         loop = asyncio.get_event_loop()
         loop.create_task(self._monitor_page_change())
@@ -26,7 +26,9 @@ class Navigation:
         :param user: User
         :param path: Absolute (starts with a '~') or relative path to page
         """
-        self.change_page_delayed = [user, path]
+        if user not in self.change_page_delayed:
+            self.change_page_delayed[user] = []
+        self.change_page_delayed[user].append(path)
 
     async def get_back(self, user):
         """
@@ -57,19 +59,17 @@ class Navigation:
         """
         Inner method, don't use it
         """
-        if not self.change_page_delayed:
-            return
+        for user, paths in self.change_page_delayed.items():
+            for path in paths:
+                current_page = user.current_page
+                current_path = current_page.path if current_page else '/'
+                concat_path = concat_paths(current_path, path)
 
-        user, path = self.change_page_delayed
-        self.change_page_delayed = None
+                page = await self._render_page(user, concat_path)
+                if page:
+                    user.set_page(page)
+                    if current_page:
+                        current_page.destruct()
+                    logging.debug(f"User {user.id} has changed page\n\tfrom {current_path}\n\tto {concat_path}")
 
-        current_page = user.current_page
-        current_path = current_page.path if current_page else '/'
-        concat_path = concat_paths(current_path, path)
-
-        page = await self._render_page(user, concat_path)
-        if page:
-            user.set_page(page)
-            if current_page:
-                current_page.destruct()
-            logging.debug(f"User {user.id} has changed page\n\tfrom {current_path}\n\tto {concat_path}")
+        self.change_page_delayed.clear()
