@@ -40,4 +40,8 @@ class RawMessageHandlers(ABC):
 
     async def message_reply(self, message):
         user = await self._get_user_from_message(message)
+
+        # TODO: replace by proper raw-messages service
+        await user.storage.set("message", message)
+
         await self.user_input.handle_input(user, message.text)
