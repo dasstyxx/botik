@@ -2,8 +2,6 @@ import logging
 
 
 class UserInput:
-    def __init__(self, users):
-        self.users = users
 
     async def forward_inline_button(self, user, text):
         page = user.current_page

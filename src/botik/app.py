@@ -13,8 +13,7 @@ class App(ABC):
     def __init__(self, bot):
         self.bot = bot
         self._page_fac: PageFactory = None
-        self.users = UserBase()
-        self.user_input = UserInput(self.users)
+        self.user_input = UserInput()
         self.pages_data = None
 
     @abstractmethod

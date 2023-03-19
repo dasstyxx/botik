@@ -2,13 +2,13 @@ import logging
 from abc import ABC, abstractmethod
 
 from botik.navigation import navigator
+from botik.user import users
 
 
 class RawMessageHandlers(ABC):
-    def __init__(self, bot, start_callback, users, user_input):
+    def __init__(self, bot, start_callback, user_input):
         self.bot = bot
         self.user_input = user_input
-        self.users = users
         self.start_callback = start_callback
 
         self._initialize_handlers(bot)
@@ -22,11 +22,11 @@ class RawMessageHandlers(ABC):
         pass
 
     async def _get_user_from_id(self, user_id):
-        if self.users.exists(user_id):
-            user = self.users.get(user_id)
+        if users.exists(user_id):
+            user = users.get(user_id)
             logging.debug(f"Existing user! id: {user.id}")
         else:
-            user = self.users.add(user_id)
+            user = users.add(user_id)
             await navigator.change_page(user, '/')
             # await navigator.execute_page_change()
             logging.debug(f"New user! id: {user.id}")
