@@ -1,0 +1,9 @@
+site_name: Botik
+theme:
+  name: material
+  palette:
+    primary: slate
+    accent: orange
+
+markdown_extensions:
+  - pymdownx.superfences
